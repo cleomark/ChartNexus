@@ -1,16 +1,21 @@
+// Wait for the DOM to fully load before executing the script
 document.addEventListener("DOMContentLoaded", () => {
   const exchangeSelect = document.getElementById("exchange-select");
   const headerItems = document.querySelectorAll(".header-item");
   const themeSwitcher = document.getElementById("theme-switcher");
+
+  // Initialize state variables
   let currentMarketId = exchangeSelect.value;
   let currentList = 0;
   let isDarkTheme = false;
 
+  // Event listener for exchange selection dropdown change
   exchangeSelect.addEventListener("change", () => {
     currentMarketId = exchangeSelect.value;
     fetchData(currentMarketId, currentList);
   });
 
+  // Event listeners for clicking on table headers to switch views
   headerItems.forEach((item) => {
     item.addEventListener("click", () => {
       currentList = item.getAttribute("data-list");
@@ -18,11 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Event listener for theme switcher button
   themeSwitcher.addEventListener("click", () => {
     isDarkTheme = !isDarkTheme;
     document.body.className = isDarkTheme ? "dark-theme" : "light-theme";
   });
 
+  /**
+   * Fetches data from the server based on the selected market and list.
+   * @param {number} marketId - The market ID (0 for SGX, 2 for Bursa, 3 for Nasdaq).
+   * @param {number} list - The list type (0 for Top Volume, 1 for Top Gainers, etc.).
+   */
   function fetchData(marketId, list) {
     const url = `https://livefeed3.chartnexus.com/Dummy/quotes?market_id=${marketId}&list=${list}`;
     fetch(url)
@@ -31,6 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((error) => console.error("Error fetching data:", error));
   }
 
+  /**
+   * Updates the table with the fetched data.
+   * @param {Array} data - The array of stock data.
+   */
   function updateTable(data) {
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
@@ -98,10 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /**
+   * Formats a number to three decimal places.
+   * @param {number} number - The number to format.
+   * @returns {string} The formatted number.
+   */
   function formatNumber(number) {
     return parseFloat(number).toFixed(3);
   }
 
+  /**
+   * Formats a volume number, adding 'M' for millions and 'K' for thousands.
+   * @param {number} volume - The volume to format.
+   * @returns {string} The formatted volume.
+   */
   function formatVolume(volume) {
     if (volume >= 1e6) {
       return (volume / 1e6).toFixed(2) + "M";
@@ -112,13 +137,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /**
+   * Formats a percentage to two decimal places and adds a '%' sign.
+   * @param {number} percent - The percentage to format.
+   * @returns {string} The formatted percentage.
+   */
   function formatPercent(percent) {
     return percent.toFixed(2) + "%";
   }
 
+  // Set the initial theme
   document.body.className = "light-theme";
 
+  // Fetch initial data
   fetchData(currentMarketId, currentList);
 
+  // Set up polling to fetch new data every 5 seconds
   setInterval(() => fetchData(currentMarketId, currentList), 5000);
 });
