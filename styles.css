@@ -3,7 +3,55 @@ body {
   background-color: #f0f0f0;
   margin: 0;
   padding: 20px;
+  color: #000;
 }
+
+/* Light Theme */
+body.light-theme {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+body.light-theme .container {
+  background: #fff;
+}
+
+body.light-theme .table-header {
+  background: #333;
+  color: #fff;
+}
+
+body.light-theme th {
+  background: #f4f4f4;
+}
+
+body.light-theme .header-item:hover {
+  background: #555;
+}
+
+/* Dark Theme */
+body.dark-theme {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+body.dark-theme .container {
+  background: #333;
+}
+
+body.dark-theme .table-header {
+  background: #555;
+  color: #fff;
+}
+
+body.dark-theme th {
+  background: #444;
+}
+
+body.dark-theme .header-item:hover {
+  background: #777;
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -13,12 +61,52 @@ body {
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 #exchange-select {
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+#exchange-select:hover {
+  background-color: #e6e6e6;
+  border-color: #aaa;
+}
+
+#exchange-select:focus {
+  outline: none;
+  border-color: #666;
+}
+
+#theme-switcher {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#theme-switcher:hover {
+  background-color: #0056b3;
+}
+
+#theme-switcher:focus {
+  outline: none;
 }
 
 .table-container {
@@ -55,6 +143,36 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-th {
-  background: #f4f4f4;
+.stock-name {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+td:first-child {
+  text-align: left;
+}
+
+td:not(:first-child) {
+  text-align: right;
+}
+
+td.flash {
+  animation: flash 1s;
+}
+
+@keyframes flash {
+  from {
+    background-color: yellow;
+  }
+  to {
+    background-color: inherit;
+  }
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
 }
